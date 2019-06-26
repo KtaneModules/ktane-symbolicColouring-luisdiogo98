@@ -99,7 +99,7 @@ public class symbolicColouringScript : MonoBehaviour
 		{
 			switch(bomb.GetBatteryCount())
 			{
-				case 0: btnOrder = new int[] {2, 3, 1, 0}; break;
+				case 0: btnOrder = new int[] {2, 3, 0, 1}; break;
 				case 1: btnOrder = new int[] {1, 0, 2, 3}; break;
 				case 2: btnOrder = new int[] {0, 3, 1, 2}; break;
 				case 3: btnOrder = new int[] {2, 0, 3, 1}; break;
