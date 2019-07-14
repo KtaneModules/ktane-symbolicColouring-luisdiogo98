@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using KModkit;
+using rnd = UnityEngine.Random;
 
 public class symbolicColouringScript : MonoBehaviour 
 {
@@ -18,8 +19,6 @@ public class symbolicColouringScript : MonoBehaviour
 
 	public KMBombInfo bomb;
 	public KMAudio Audio;
-
-	static System.Random rnd = new System.Random();
 
 	//Logging
 	static int moduleIdCounter = 1;
@@ -62,10 +61,10 @@ public class symbolicColouringScript : MonoBehaviour
 	{
 		for(int i = 0; i < 4; i++)
 		{
-			int symbol = rnd.Next() % 52;
+			int symbol = rnd.Range(0, 52);
 			while(Array.Exists<int>(symbols.ToArray(), x => x == symbol))
 			{
-				symbol = rnd.Next() % 52;
+				symbol = rnd.Range(0, 52);
 			}
 			symbols.Add(symbol);
 			SymbolInfo info = GetSymbolInfo(symbol);
