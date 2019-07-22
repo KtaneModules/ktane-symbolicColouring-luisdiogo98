@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using KModkit;
 using rnd = UnityEngine.Random;
+using System.Text.RegularExpressions;
 
 public class symbolicColouringScript : MonoBehaviour 
 {
@@ -312,4 +313,83 @@ public class symbolicColouringScript : MonoBehaviour
 
 		return "";
 	}
+
+    //twitch plays
+    private bool cmdIsValid(string param)
+    {
+        string[] parameters = param.Split(' ', ',');
+        for (int i = 1; i < parameters.Length; i++)
+        {
+            if (!parameters[i].EqualsIgnoreCase("1") && !parameters[i].EqualsIgnoreCase("2") && !parameters[i].EqualsIgnoreCase("3") && !parameters[i].EqualsIgnoreCase("4") && !parameters[i].EqualsIgnoreCase("red") && !parameters[i].EqualsIgnoreCase("white") && !parameters[i].EqualsIgnoreCase("blue") && !parameters[i].EqualsIgnoreCase("yellow"))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} press <button> [Presses the specified button] | !{0} press <button> <button> [Example of button chaining] | !{0} reset [Resets all inputs] | Valid buttons are white, red, yellow, blue, and 1-4 being the symbol buttons from left to right";
+    #pragma warning restore 414
+
+    IEnumerator ProcessTwitchCommand(string command)
+    {
+        if (Regex.IsMatch(command, @"^\s*reset\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            Debug.LogFormat("[Symbolic Colouring #{0}] Reset of inputs triggered! (TP)", moduleId);
+            colorBtns[0].OnInteract();
+            pressed = new List<int>();
+            nextPress = 0;
+            yield break;
+        }
+        string[] parameters = command.Split(' ');
+        if (Regex.IsMatch(parameters[0], @"^\s*press\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            if (parameters.Length > 1)
+            {
+                if (cmdIsValid(command))
+                {
+                    yield return null;
+                    for (int i = 1; i < parameters.Length; i++)
+                    {
+                        if (parameters[i].EqualsIgnoreCase("1"))
+                        {
+                            symbolBtns[0].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("2"))
+                        {
+                            symbolBtns[1].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("3"))
+                        {
+                            symbolBtns[2].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("4"))
+                        {
+                            symbolBtns[3].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("white"))
+                        {
+                            colorBtns[0].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("red"))
+                        {
+                            colorBtns[1].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("yellow"))
+                        {
+                            colorBtns[2].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("blue"))
+                        {
+                            colorBtns[3].OnInteract();
+                        }
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                }
+            }
+            yield break;
+        }
+    }
 }
