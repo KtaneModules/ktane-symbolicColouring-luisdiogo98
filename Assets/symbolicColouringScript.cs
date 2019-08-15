@@ -277,7 +277,7 @@ public class symbolicColouringScript : MonoBehaviour
 
 		if(color != btnColors[nextPress])
 		{
-			Debug.LogFormat("[Symbolic Colouring #{0}] Strike! Colored button {1} with {2}. Expected {3}.", moduleId, i + 1, GetColorName(color), GetColorName(btnColors[btnOrder[nextPress]]));
+			Debug.LogFormat("[Symbolic Colouring #{0}] Strike! Colored button {1} with {2}. Expected {3}.", moduleId, i + 1, GetColorName(color), GetColorName(btnColors[nextPress]));
 			GetComponent<KMBombModule>().HandleStrike();
 			return;
 		}
